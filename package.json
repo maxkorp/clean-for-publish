@@ -1,6 +1,6 @@
 {
   "name": "clean-for-publish",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A small cli utility for cleaning out your build folder before publishing node native modules",
   "main": "lib/index.js",
   "author": "Max Korp <maxkorp@8bytealchemy.com",

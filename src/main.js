@@ -3,16 +3,18 @@ const glob = require('glob');
 const path = require('path');
 
 function cleanForPublish(location=process.cwd(), extensions=['.node', '.pdb']) {
-  const pattern = path.join(location, 'build', '**', '*.*');
-  const modules = glob.sync(pattern)
-    .filter(function(file) {
-      return !extensions.some(function(extension) {
-        return file.indexOf(extension) >= 0;
-      })
+  const savePattern = path.join(location, 'build', '**', `@(*${extensions.join('|*')})`);
+  const killPattern = path.join(location, 'build', '**');
+  const save = glob.sync(savePattern);
+  const kill = glob.sync(killPattern)
+    .filter(function(bad) {
+      return !save.some(function(good) {
+        return good.indexOf(bad) == 0;
+      });
     });
-  console.log(`cleaning ${modules.length} file(s)`);
+  console.log(`cleaning ${kill.length} file(s)`);
 
-  modules.forEach(function(file) {
+  kill.forEach(function(file) {
     fse.removeSync(file);
   });
 }
